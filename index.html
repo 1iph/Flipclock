@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <title>Flip Clock</title>
+    <link rel="icon" type="png" href="Images/Logo.png">
+    <script src="Scripts/theme-loader.js"></script>
+</head>
+<body>
+    <header class="navbar" id="navbar">
+        <img src="Images/Logo.png" class="logo" alt="Logo">
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav class="menu-links">
+            <a href="index.html">Clock</a>
+            <a href="stopwatch.html">Stopwatch</a>
+            <a href="timer.html">Timer</a>
+            <a href="theme.html">Theme</a>
+        </nav>
+    </header>
+    <button onclick="toggleFullscreen()" class="Fullscreen" id="fullscreen-button">Fullscreen</button>
+    <button onclick="untoggleFullscreen()" class="noFullscreen" id="hide-fullscreen-button">Exit Fullscreen</button>
+    
+    <div class="clock-container">
+        <div class="clock">
+            <div class="unit hour-unit">
+                <div class="hour-container">
+                    <div class="flip-card optional-digit" id="hour-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">1</div>
+                            <div class="flip-card-back">1</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="hour-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">2</div>
+                            <div class="flip-card-back">2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Hours</div>
+            </div>
+            
+            <div class="separator">:</div>
+            
+            <div class="unit">
+                <div class="minute-container">
+                    <div class="flip-card" id="minute-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="minute-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Minutes</div>
+            </div>
+            
+            <div class="separator">:</div>
+            
+            <div class="unit">
+                <div class="second-container">
+                    <div class="flip-card" id="second-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="second-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Seconds</div>
+            </div>
+            
+            <div class="unit period-unit">
+                <div class="am-pm" id="am-pm">AM</div>
+                <div class="unit-label">AM/PM</div>
+            </div>
+        </div>
+        <div class="time-zone">Pacific Daylight Time (PDT)</div>
+    </div>
+   
+    <script src="Scripts/script.js"></script>
+    <script>
+       
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuLinks = document.querySelector('.menu-links');
+        
+        menuToggle.addEventListener('click', () => {
+            menuLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
+

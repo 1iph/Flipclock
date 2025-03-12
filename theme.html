@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Clock</title>
+    <link rel="icon" type="png" href="Images/Logo.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            /* Default dark theme */
+            --background-color: #121212;
+            --text-color: #ffffff;
+            --card-color: #1e1e1e;
+            --card-text-color: #ffffff;
+            --control-bg-color: #2c2c2c;
+            --control-hover-color: #3c3c3c;
+            --separator-color: #ffffff;
+            --accent-color: #007bff;
+            --navbar-bg: #1a1a1a;
+            --input-bg: #2c2c2c;
+            --input-text: #ffffff;
+            --theme-selector-bg: #2c2c2c;
+        }
+
+        /* Light theme */
+        .theme-light {
+            --background-color: #f5f5f5;
+            --text-color: #333333;
+            --card-color: #ffffff;
+            --card-text-color: #333333;
+            --control-bg-color: #e0e0e0;
+            --control-hover-color: #d0d0d0;
+            --separator-color: #333333;
+            --accent-color: #0066cc;
+            --navbar-bg: #e0e0e0;
+            --input-bg: #ffffff;
+            --input-text: #333333;
+            --theme-selector-bg: #e0e0e0;
+        }
+
+        /* Green theme */
+        .theme-green {
+            --background-color: #0a2e0a;
+            --text-color: #e0ffe0;
+            --card-color: #0f3f0f;
+            --card-text-color: #e0ffe0;
+            --control-bg-color: #154f15;
+            --control-hover-color: #1a5f1a;
+            --separator-color: #4caf50;
+            --accent-color: #4caf50;
+            --navbar-bg: #0f3f0f;
+            --input-bg: #154f15;
+            --input-text: #e0ffe0;
+            --theme-selector-bg: #154f15;
+        }
+
+        /* Teal theme */
+        .theme-teal {
+            --background-color: #013e3e;
+            --text-color: #e0ffff;
+            --card-color: #025050;
+            --card-text-color: #e0ffff;
+            --control-bg-color: #026666;
+            --control-hover-color: #037d7d;
+            --separator-color: #00BCD4;
+            --accent-color: #00BCD4;
+            --navbar-bg: #025050;
+            --input-bg: #026666;
+            --input-text: #e0ffff;
+            --theme-selector-bg: #026666;
+        }
+
+        /* Purple theme */
+        .theme-purple {
+            --background-color: #2a0a38;
+            --text-color: #f9e6ff;
+            --card-color: #3b0f4f;
+            --card-text-color: #f9e6ff;
+            --control-bg-color: #4a1463;
+            --control-hover-color: #5a1877;
+            --separator-color: #9c27b0;
+            --accent-color: #9c27b0;
+            --navbar-bg: #3b0f4f;
+            --input-bg: #4a1463;
+            --input-text: #f9e6ff;
+            --theme-selector-bg: #4a1463;
+        }
+
+        /* Blue theme */
+        .theme-blue {
+            --background-color: #0a1929;
+            --text-color: #e3f2fd;
+            --card-color: #0d2137;
+            --card-text-color: #e3f2fd;
+            --control-bg-color: #102c47;
+            --control-hover-color: #143756;
+            --separator-color: #2196F3;
+            --accent-color: #2196F3;
+            --navbar-bg: #0d2137;
+            --input-bg: #102c47;
+            --input-text: #e3f2fd;
+            --theme-selector-bg: #102c47;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--navbar-bg);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .menu-links {
+            display: flex;
+        }
+
+        .menu-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-links a:hover {
+            background-color: var(--control-hover-color);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .clock {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 5px;
+        }
+
+        .unit-label {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+
+        .hour-container,
+        .minute-container,
+        .second-container,
+        .milliseconds-container {
+            display: flex;
+        }
+
+        .flip-card,
+        .milliseconds-card {
+            position: relative;
+            width: 60px;
+            height: 100px;
+            perspective: 1000px;
+            margin: 0 2px;
+        }
+
+        .milliseconds-card {
+            width: 40px;
+            height: 70px;
+        }
+
+        .flip-card-inner,
+        .milliseconds-card-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+
+        .milliseconds-card-inner {
+            transition: transform 0.3s;
+        }
+
+        .flip-card.flipping .flip-card-inner {
+            transform: rotateX(180deg);
+        }
+
+        .milliseconds-card.flipping .milliseconds-card-inner {
+            transform: rotateX(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back,
+        .milliseconds-card-front,
+        .milliseconds-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            background-color: var(--card-color);
+            color: var(--card-text-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .milliseconds-card-front,
+        .milliseconds-card-back {
+            font-size: 2rem;
+        }
+
+        .flip-card-back,
+        .milliseconds-card-back {
+            transform: rotateX(180deg);
+        }
+
+        .separator {
+            font-size: 3rem;
+            margin: 0 5px;
+            display: flex;
+            align-items: center;
+            color: var(--separator-color);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--control-bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s;
+        }
+
+        .control-btn:hover:not([disabled]) {
+            background-color: var(--control-hover-color);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .start {
+            background-color: var(--accent-color);
+        }
+
+        .timer-settings {
+            margin-bottom: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .timer-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .timer-input label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .timer-input input {
+            width: 60px;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-align: center;
+            background-color: var(--input-bg);
+            color: var(--input-text);
+        }
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--theme-selector-bg);
+            max-width: 600px;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme-option {
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .theme-option:hover {
+            transform: translateY(-2px);
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-color);
+        }
+
+        .default-option {
+            background-color: #121212;
+            color: white;
+        }
+
+        .light-option {
+            background-color: #f5f5f5;
+            color: #333333;
+        }
+
+        .green-option {
+            background-color: #0a2e0a;
+            color: #e0ffe0;
+        }
+
+        .teal-option {
+            background-color: #013e3e;
+            color: #e0ffff;
+        }
+
+        .purple-option {
+            background-color: #2a0a38;
+            color: #f9e6ff;
+        }
+
+        .blue-option {
+            background-color: #0a1929;
+            color: #e3f2fd;
+        }
+
+        .theme-preview {
+            background-color: var(--card-color);
+            color: var(--card-text-color);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .theme-preview h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .theme-preview-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .menu-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: var(--navbar-bg);
+                z-index: 1;
+                padding: 10px;
+            }
+
+            .menu-links.active {
+                display: flex;
+            }
+
+            .menu-links a {
+                margin: 5px 0;
+                padding: 10px;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+
+            .flip-card {
+                width: 50px;
+                height: 80px;
+            }
+
+            .milliseconds-card {
+                width: 35px;
+                height: 60px;
+            }
+
+            .flip-card-front,
+            .flip-card-back {
+                font-size: 2.5rem;
+            }
+
+            .milliseconds-card-front,
+            .milliseconds-card-back {
+                font-size: 1.8rem;
+            }
+
+            .separator {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .flip-card {
+                width: 40px;
+                height: 70px;
+            }
+
+            .milliseconds-card {
+                width: 30px;
+                height: 50px;
+            }
+
+            .flip-card-front,
+            .flip-card-back {
+                font-size: 2rem;
+            }
+
+            .milliseconds-card-front,
+            .milliseconds-card-back {
+                font-size: 1.5rem;
+            }
+
+            .separator {
+                font-size: 2rem;
+                margin: 0 2px;
+            }
+        }
+
+        /* Theme page specific styles */
+        .theme-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .theme-header {
+            text-align: center;
+            margin-bottom: 3rem;
+           margin-top: 50px;
+        }
+
+        .theme-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .theme-header p {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .theme-card {
+            background: var(--card-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-card.active {
+            border-color: var(--accent-color);
+        }
+
+        .theme-card.active::before {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .theme-preview-header {
+            height: 40px;
+            background: var(--navbar-bg);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .theme-preview-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-color);
+            margin-right: 6px;
+            opacity: 0.5;
+        }
+
+        .theme-preview-content {
+            background: var(--background-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .theme-preview-block {
+            height: 20px;
+            background: var(--control-bg-color);
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .theme-preview-block:last-child {
+            width: 60%;
+        }
+
+        .theme-preview-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+            width: 100%;
+        }
+
+        .theme-preview-button:hover {
+            opacity: 0.9;
+        }
+
+        .theme-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .theme-description {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+    
+        .theme-colors {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+      
+        @media (max-width: 768px) {
+            .theme-container {
+                padding: 1rem;
+            }
+
+            .theme-header h1 {
+                font-size: 2rem;
+            }
+
+            .theme-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        .theme-transition {
+            animation: themeChange 0.5s ease;
+        }
+
+        @keyframes themeChange {
+            0% {
+                opacity: 0.5;
+                transform: scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <img src="Images/Logo.png" class="logo" alt="Logo">
+        <div class="menu-toggle" id="menuToggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav class="menu-links" id="menuLinks">
+            <a href="index.html">Clock</a>
+            <a href="stopwatch.html">Stopwatch</a>
+            <a href="timer.html">Timer</a>
+            <a href="theme.html">Theme</a>
+        </nav>
+    </header>
+
+    <div class="theme-container">
+        <div class="theme-header">
+            <h1>Choose Your Theme</h1>
+            <p>Select a theme that matches your style. The theme will be applied across all pages.</p>
+        </div>
+
+        <div class="theme-grid">
+            <!-- Default Theme -->
+            <div class="theme-card" data-theme="default">
+                <div class="theme-name">Default Dark</div>
+                <div class="theme-description">A sleek dark theme that's easy on the eyes</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #121212"></div>
+                    <div class="color-dot" style="background-color: #1e1e1e"></div>
+                    <div class="color-dot" style="background-color: #007bff"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+
+            <!-- Light Theme -->
+            <div class="theme-card" data-theme="light">
+                <div class="theme-name">Light Mode</div>
+                <div class="theme-description">Clean and bright for optimal daylight viewing</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #f5f5f5"></div>
+                    <div class="color-dot" style="background-color: #ffffff"></div>
+                    <div class="color-dot" style="background-color: #0066cc"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+
+            <!-- Green Theme -->
+            <div class="theme-card" data-theme="green">
+                <div class="theme-name">Forest Green</div>
+                <div class="theme-description">Inspired by nature's calming greens</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #0a2e0a"></div>
+                    <div class="color-dot" style="background-color: #0f3f0f"></div>
+                    <div class="color-dot" style="background-color: #4caf50"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+
+            <!-- Teal Theme -->
+            <div class="theme-card" data-theme="teal">
+                <div class="theme-name">Ocean Teal</div>
+                <div class="theme-description">Deep and serene like the ocean</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #013e3e"></div>
+                    <div class="color-dot" style="background-color: #025050"></div>
+                    <div class="color-dot" style="background-color: #00BCD4"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+
+            <!-- Purple Theme -->
+            <div class="theme-card" data-theme="purple">
+                <div class="theme-name">Royal Purple</div>
+                <div class="theme-description">Rich and elegant purple hues</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #2a0a38"></div>
+                    <div class="color-dot" style="background-color: #3b0f4f"></div>
+                    <div class="color-dot" style="background-color: #9c27b0"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+
+            <!-- Blue Theme -->
+            <div class="theme-card" data-theme="blue">
+                <div class="theme-name">Night Blue</div>
+                <div class="theme-description">Deep blue inspired by the night sky</div>
+                <div class="theme-colors">
+                    <div class="color-dot" style="background-color: #0a1929"></div>
+                    <div class="color-dot" style="background-color: #0d2137"></div>
+                    <div class="color-dot" style="background-color: #2196F3"></div>
+                </div>
+                <div class="theme-preview-header">
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                    <div class="theme-preview-dot"></div>
+                </div>
+                <div class="theme-preview-content">
+                    <div class="theme-preview-block"></div>
+                    <div class="theme-preview-block"></div>
+                </div>
+                <button class="theme-preview-button">Select Theme</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+   
+        const menuToggle = document.getElementById('menuToggle');
+        const menuLinks = document.getElementById('menuLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            menuLinks.classList.toggle('active');
+        });
+        
+
+        const themeCards = document.querySelectorAll('.theme-card');
+        
+     
+        function applyTheme(theme) {
+        
+            document.body.className = 'theme-transition';
+        
+            if (theme !== 'default') {
+                document.body.className = `theme-transition theme-${theme}`;
+            }
+            
+            
+            localStorage.setItem('clockTheme', theme);
+        }
+        
+      
+        function updateActiveTheme(selectedTheme) {
+            themeCards.forEach(card => {
+                if (card.dataset.theme === selectedTheme) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+        }
+        
+   
+        const savedTheme = localStorage.getItem('clockTheme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+            updateActiveTheme(savedTheme);
+        } else {
+            
+            updateActiveTheme('default');
+        }
+        
+      
+        themeCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const theme = card.dataset.theme;
+                applyTheme(theme);
+                updateActiveTheme(theme);
+                
+                
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 200);
+            });
+        });
+
+        document.body.addEventListener('animationend', (e) => {
+            if (e.animationName === 'themeChange') {
+                document.body.classList.remove('theme-transition');
+            }
+        });
+    </script>
+    <script src="Scripts/script.js"></script>
+</body>
+</html>

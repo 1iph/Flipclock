@@ -1,0 +1,213 @@
+:root {
+    /* Default dark theme */
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --card-color: #1e1e1e;
+    --card-text-color: #ffffff;
+    --control-bg-color: #2c2c2c;
+    --control-hover-color: #3c3c3c;
+    --separator-color: #525252;
+    --accent-color: #007bff;
+    --navbar-bg: #1a1a1a;
+    --input-bg: #2c2c2c;
+    --input-text: #ffffff;
+    --theme-selector-bg: #2c2c2c;
+    --flip-card-shadow: rgba(0, 0, 0, 0.3);
+    --time-zone-color: rgb(68, 68, 68);
+  }
+  
+  /* Light theme */
+  .theme-light {
+    --background-color: #f5f5f5;
+    --text-color: #333333;
+    --card-color: #ffffff;
+    --card-text-color: #333333;
+    --control-bg-color: #e0e0e0;
+    --control-hover-color: #d0d0d0;
+    --separator-color: #333333;
+    --accent-color: #0066cc;
+    --navbar-bg: #e0e0e0;
+    --input-bg: #ffffff;
+    --input-text: #333333;
+    --theme-selector-bg: #e0e0e0;
+    --flip-card-shadow: rgba(0, 0, 0, 0.1);
+    --time-zone-color: #555555;
+  }
+  
+  /* Green theme */
+  .theme-green {
+    --background-color: #0a2e0a;
+    --text-color: #e0ffe0;
+    --time-zone-color: #e0ffe0;
+    --card-color: #0f3f0f;
+    --card-text-color: #e0ffe0;
+    --control-bg-color: #154f15;
+    --control-hover-color: #1a5f1a;
+    --separator-color: #4caf50;
+    --accent-color: #4caf50;
+    --navbar-bg: #0f3f0f;
+    --input-bg: #154f15;
+    --input-text: #e0ffe0;
+    --theme-selector-bg: #154f15;
+    --flip-card-shadow: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Teal theme */
+  .theme-teal {
+    --background-color: #013e3e;
+    --text-color: #e0ffff;
+    --card-color: #025050;
+    --card-text-color: #e0ffff;
+    --control-bg-color: #026666;
+    --control-hover-color: #037d7d;
+    --separator-color: #00bcd4;
+    --accent-color: #00bcd4;
+    --navbar-bg: #025050;
+    --input-bg: #026666;
+    --input-text: #e0ffff;
+    --theme-selector-bg: #026666;
+    --flip-card-shadow: rgba(0, 0, 0, 0.3);
+    --time-zone-color: #e0ffff;
+  }
+  
+  /* Purple theme */
+  .theme-purple {
+    --background-color: #2a0a38;
+    --text-color: #f9e6ff;
+    --time-zone-color: #f9e6ff;
+    --card-color: #3b0f4f;
+    --card-text-color: #f9e6ff;
+    --control-bg-color: #4a1463;
+    --control-hover-color: #5a1877;
+    --separator-color: #9c27b0;
+    --accent-color: #9c27b0;
+    --navbar-bg: #3b0f4f;
+    --input-bg: #4a1463;
+    --input-text: #f9e6ff;
+    --theme-selector-bg: #4a1463;
+    --flip-card-shadow: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Blue theme */
+  .theme-blue {
+    --background-color: #0a1929;
+    --text-color: #e3f2fd;
+    --time-zone-color: #e3f2fd;
+    --card-color: #0d2137;
+    --card-text-color: #e3f2fd;
+    --control-bg-color: #102c47;
+    --control-hover-color: #143756;
+    --separator-color: #2196f3;
+    --accent-color: #2196f3;
+    --navbar-bg: #0d2137;
+    --input-bg: #102c47;
+    --input-text: #e3f2fd;
+    --theme-selector-bg: #102c47;
+    --flip-card-shadow: rgba(0, 0, 0, 0.3);
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+  }
+  
+  .navbar {
+    background-color: var(--navbar-bg);
+  }
+  
+  .menu-links a {
+    color: var(--text-color);
+  }
+  
+  .menu-links a:hover {
+    background-color: var(--control-hover-color);
+  }
+  
+  .bar {
+    background-color: var(--text-color);
+  }
+  
+  .unit-label {
+    color: var(--text-color);
+  }
+  
+  .flip-card,
+  .milliseconds-card {
+    background-color: var(--card-color);
+    box-shadow: 0 2px 6px var(--flip-card-shadow);
+  }
+  
+  .flip-card-front,
+  .flip-card-back,
+  .milliseconds-card-front,
+  .milliseconds-card-back {
+    background-color: var(--card-color);
+    color: var(--card-text-color);
+    backface-visibility: hidden;
+  }
+  
+  .am-pm {
+    background-color: var(--card-color);
+    color: var(--card-text-color);
+  }
+  
+  .separator {
+    color: var(--separator-color);
+  }
+  
+  .control-btn {
+    background-color: var(--control-bg-color);
+    color: var(--text-color);
+  }
+  
+  .control-btn:hover:not([disabled]) {
+    background-color: var(--control-hover-color);
+  }
+  
+  .control-btn.start {
+    background-color: var(--accent-color);
+  }
+  
+  .timer-input input {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--control-bg-color);
+  }
+  
+  .timer-input input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+  }
+  
+  .time-zone {
+    color: var(--time-zone-color);
+  }
+  
+
+  .flip-card,
+  .milliseconds-card,
+  .flip-card-front,
+  .flip-card-back,
+  .milliseconds-card-front,
+  .milliseconds-card-back,
+  .am-pm {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .flip-card-front,
+  .flip-card-back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .flip-card-back {
+    transform: rotateX(180deg);
+  }
+  
+  

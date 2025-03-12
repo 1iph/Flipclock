@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme-styles.css">
+    <title>Flip Clock</title>
+    <link rel="icon" type="png" href="Images/Logo.png">
+    <script src="Scripts/theme-loader.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <img src="Images/Logo.png" class="logo" alt="Logo">
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <nav class="menu-links">
+            <a href="index.html">Clock</a>
+            <a href="stopwatch.html">Stopwatch</a>
+            <a href="timer.html">Timer</a>
+            <a href="theme.html">Theme</a>
+        </nav>
+    </header>
+    <div class="clock-container">
+        <div class="clock">
+            <div class="unit hour-unit">
+                <div class="hour-container">
+                    <div class="flip-card" id="hour-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="hour-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Hours</div>
+            </div>
+            
+            <div class="separator">:</div>
+            
+            <div class="unit">
+                <div class="minute-container">
+                    <div class="flip-card" id="minute-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="minute-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Minutes</div>
+            </div>
+            
+            <div class="separator">:</div>
+            
+            <div class="unit">
+                <div class="second-container">
+                    <div class="flip-card" id="second-tens">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" id="second-ones">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">0</div>
+                            <div class="flip-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Seconds</div>
+            </div>
+            
+            <div class="separator">:</div>
+            
+            <div class="unit">
+                <div class="milliseconds-container">
+                    <div class="milliseconds-card" id="ms-hundreds">
+                        <div class="milliseconds-card-inner">
+                            <div class="milliseconds-card-front">0</div>
+                            <div class="milliseconds-card-back">0</div>
+                        </div>
+                    </div>
+                    <div class="milliseconds-card" id="ms-tens">
+                        <div class="milliseconds-card-inner">
+                            <div class="milliseconds-card-front">0</div>
+                            <div class="milliseconds-card-back">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="unit-label">Milliseconds</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn start" id="start-btn">Start</button>
+            <button class="control-btn stop" id="stop-btn" disabled>Stop</button>
+            <button class="control-btn reset" id="reset-btn" disabled>Reset</button>
+        </div>
+    </div>
+
+    <script>
+  
+        const hourTens = document.getElementById('hour-tens');
+        const hourOnes = document.getElementById('hour-ones');
+        const minuteTens = document.getElementById('minute-tens');
+        const minuteOnes = document.getElementById('minute-ones');
+        const secondTens = document.getElementById('second-tens');
+        const secondOnes = document.getElementById('second-ones');
+        const msHundreds = document.getElementById('ms-hundreds');
+        const msTens = document.getElementById('ms-tens');
+        
+
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        
+  
+        let startTime;
+        let elapsedTime = 0;
+        let stopwatchInterval;
+        let isRunning = false;
+        
+   
+        startBtn.addEventListener('click', startStopwatch);
+        stopBtn.addEventListener('click', stopStopwatch);
+        resetBtn.addEventListener('click', resetStopwatch);
+        
+     
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menuLinks = document.querySelector('.menu-links');
+        
+        menuToggle.addEventListener('click', () => {
+            menuLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+        
+       
+        function startStopwatch() {
+            if (!isRunning) {
+                startTime = Date.now() - elapsedTime;
+                stopwatchInterval = setInterval(updateStopwatch, 10); 
+                isRunning = true;
+                
+               
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                resetBtn.disabled = true;
+            }
+        }
+        
+      
+        function stopStopwatch() {
+            if (isRunning) {
+                clearInterval(stopwatchInterval);
+                elapsedTime = Date.now() - startTime;
+                isRunning = false;
+                
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                resetBtn.disabled = false;
+            }
+        }
+        
+   
+        function resetStopwatch() {
+            clearInterval(stopwatchInterval);
+            elapsedTime = 0;
+            isRunning = false;
+            updateDisplay(0, 0, 0, 0);
+                 
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            resetBtn.disabled = true;
+        }
+        
+        
+        function updateStopwatch() {
+            elapsedTime = Date.now() - startTime;
+            
+           
+            const hours = Math.floor(elapsedTime / 3600000);
+            const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+            const seconds = Math.floor((elapsedTime % 60000) / 1000);
+            const milliseconds = Math.floor((elapsedTime % 1000) / 10); 
+            
+            updateDisplay(hours, minutes, seconds, milliseconds);
+        }
+        
+   
+        function updateDisplay(hours, minutes, seconds, milliseconds) {
+            const hourTensDigit = Math.floor(hours / 10);
+            const hourOnesDigit = hours % 10;
+            const minuteTensDigit = Math.floor(minutes / 10);
+            const minuteOnesDigit = minutes % 10;
+            const secondTensDigit = Math.floor(seconds / 10);
+            const secondOnesDigit = seconds % 10;
+            const msHundredsDigit = Math.floor(milliseconds / 10);
+            const msTensDigit = milliseconds % 10;
+            
+
+            updateCard(hourTens, hourTensDigit);
+            updateCard(hourOnes, hourOnesDigit);
+            updateCard(minuteTens, minuteTensDigit);
+            updateCard(minuteOnes, minuteOnesDigit);
+            updateCard(secondTens, secondTensDigit);
+            updateCard(secondOnes, secondOnesDigit);
+            updateCard(msHundreds, msHundredsDigit);
+            updateCard(msTens, msTensDigit);
+        }
+        
+  
+        function updateCard(card, newValue) {
+            const front = card.querySelector('.flip-card-front, .milliseconds-card-front');
+            const back = card.querySelector('.flip-card-back, .milliseconds-card-back');
+            
+            if (front.textContent != newValue) {
+              
+                back.textContent = newValue;
+                card.classList.add('flipping');
+                
+              
+                setTimeout(() => {
+                    card.classList.remove('flipping');
+                    front.textContent = newValue;
+                }, card.classList.contains('milliseconds-card') ? 300 : 500);
+            }
+        }
+    </script>
+</body>
+</html>
